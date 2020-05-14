@@ -14,17 +14,20 @@ class ItemsController < ApplicationController
 
   # GET /items/new
   def new
+    check_user
     @item = Item.new
   end
 
   # GET /items/1/edit
   def edit
+    authorization
   end
 
   # POST /items
   # POST /items.json
   def create
     @item = Item.new(item_params)
+    @item.user_id = current_user.id
 
     respond_to do |format|
       if @item.save
@@ -54,6 +57,7 @@ class ItemsController < ApplicationController
   # DELETE /items/1
   # DELETE /items/1.json
   def destroy
+    authorization
     @item.destroy
     respond_to do |format|
       format.html { redirect_to items_url, notice: 'Item was successfully destroyed.' }
@@ -70,5 +74,21 @@ class ItemsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def item_params
       params.require(:item).permit(:name, :description, :price, :discount, :picture)
+    end
+
+    def check_user
+      if current_user.nil?
+        redirect_to login_url, notice: 'Can\'t add item, User is not logged in'
+      end
+    end
+
+    def authorization
+      if current_user.nil?
+        redirect_to login_url, notice: 'Action not allowed, User is not logged in'
+      else 
+        if !(@item.user_id.eql? current_user.id)
+          redirect_to items_url, notice: 'You are not authorized to make changes to this item'
+        end
+      end
     end
 end
