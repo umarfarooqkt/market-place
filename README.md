@@ -1,24 +1,25 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is a basic market place application
 
-Things you may want to cover:
+At this moment this application is using a sqllite database temporarily
 
-* Ruby version
+# Setup and run
 
-* System dependencies
+- git clone
+- rails db:migrate
+- rails server
 
-* Configuration
+# Usage/routes
 
-* Database creation
+- /items
+- item/new
+- item/edit
 
-* Database initialization
+- /login
+- /signup
 
-* How to run the test suite
+- /home/index
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+A user needs to be logged in to add a new item.
+The User has to be authorized(have created the item) to make changes to an item.
