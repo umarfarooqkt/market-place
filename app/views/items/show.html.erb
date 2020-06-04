@@ -1,6 +1,6 @@
-<div class="container-fluid"> 
- <p id="notice"><%= notice %></p>
+<p id="notice"><%= notice %></p>
 
+<div class="container-fluid"> 
   <p>
     <strong>Name:</strong>
     <%= @item.name %>
@@ -23,9 +23,15 @@
 
   <p>
     <strong>Picture:</strong>
+    <br>
+    <% if @item.picture.attached? %>
+      <%= image_tag(url_for(@item.picture), class:"img-rounded", size:'400x600') %>
+    <% end %>
+    <p>
     <%= link_to @item.picture.filename, @item.picture if @item.picture.attached? %>
   </p>
 
   <%= link_to 'Edit', edit_item_path(@item) %> |
   <%= link_to 'Back', items_path %>
+  <p>
 </div>

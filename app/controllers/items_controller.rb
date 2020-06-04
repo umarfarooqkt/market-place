@@ -1,5 +1,7 @@
 class ItemsController < ApplicationController
   before_action :set_item, only: [:show, :edit, :update, :destroy]
+  before_action :check_user, except: [:index, :show]
+  before_action :authorization, only: [:edit, :destroy]
 
   # GET /items
   # GET /items.json
@@ -14,13 +16,11 @@ class ItemsController < ApplicationController
 
   # GET /items/new
   def new
-    check_user
     @item = Item.new
   end
 
   # GET /items/1/edit
   def edit
-    authorization
   end
 
   # POST /items
@@ -57,7 +57,6 @@ class ItemsController < ApplicationController
   # DELETE /items/1
   # DELETE /items/1.json
   def destroy
-    authorization
     @item.destroy
     respond_to do |format|
       format.html { redirect_to items_url, notice: 'Item was successfully destroyed.' }
@@ -83,12 +82,9 @@ class ItemsController < ApplicationController
     end
 
     def authorization
-      if current_user.nil?
-        redirect_to login_url, notice: 'Action not allowed, User is not logged in'
-      else 
+      current_user.nil? unless
         if !(@item.user_id.eql? current_user.id)
           redirect_to items_url, notice: 'You are not authorized to make changes to this item'
         end
-      end
     end
 end

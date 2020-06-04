@@ -23,7 +23,11 @@
             <td><%= item.description %></td>
             <td><%= item.price %></td>
             <td><%= item.discount %></td>
-            <td><%= item.picture %></td>
+            <td>
+            <% if item.picture.attached? %>
+            <%= image_tag(url_for(item.picture), class:"img-rounded", size:'40x60') %>
+            <% end %>
+            </td>
             <td><%= link_to 'Show', item %></td>
             <td><%= link_to 'Edit', edit_item_path(item) %></td>
             <td><%= link_to 'Destroy', item, method: :delete, data: { confirm: 'Are you sure?' } %></td>
